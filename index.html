@@ -9,6 +9,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
   <link rel="stylesheet" href="CSS/variables.css">
   <link rel="stylesheet" href="CSS/globals.css">
+  <link rel="stylesheet" href="CSS/mobile.css">
 
   <title>Frontend Mentor | Multi-step form</title>
 
@@ -30,24 +31,24 @@
   <main id="main">
 
     <!-- Sidebar start -->
-    <aside class="sidebar-steps">
-      <div class="aside__step-items-container">
-        <div class="aside__step-item" data-step="1">
+    <aside class="sidebar">
+      <div class="sidebar__step-items-container">
+        <div class="sidebar__step-item active-step" data-step="1">
           <p class="step-item__number">1</p>
           <p class="step-item__step">step 1</p>
           <p class="step-item__name">Personal info</p>
         </div>
-        <div class="aside__step-item" data-step="2">
+        <div class="sidebar__step-item" data-step="2">
           <p class="step-item__number">2</p>
           <p class="step-item__step">step 2</p>
           <p class="step-item__name">select plan</p>
         </div>
-        <div class="aside__step-item" data-step="3">
+        <div class="sidebar__step-item" data-step="3">
           <p class="step-item__number">3</p>
           <p class="step-item__step">step 3</p>
           <p class="step-item__name">add-ons</p>
         </div>
-        <div class="aside__step-item" data-step="4">
+        <div class="sidebar__step-item" data-step="4">
           <p class="step-item__number">4</p>
           <p class="step-item__step">step 4</p>
           <p class="step-item__name">summary</p>
@@ -65,15 +66,18 @@
       <div class="step-section__form-container">
         <form action="" id="personal-info-form">
           <div class="form-control">
-            <label for="name" class="form-label">Name</label>
+            <label for="name" class="add-ons__form-label">Name <span class="form-error-text">This is field is
+                required</span></label>
             <input type="text" placeholder="e.g. ETOUNDI OYONO Georges L." name="name" id="name" class="form-input">
           </div>
           <div class="form-control">
-            <label for="email" class="form-label">Email Address</label>
+            <label for="email" class="add-ons__form-label">Email Address <span class="form-error-text">This is field is
+                required</span></label>
             <input type="text" placeholder="e.g. etoundioyonogl@email.com" name="email" id="email" class="form-input">
           </div>
           <div class="form-control">
-            <label for="phone" class="form-label">Phone Number</label>
+            <label for="phone" class="form-label">Phone Number <span class="form-error-text">This is field is
+                required</span></label>
             <input type="text" placeholder="e.g. +237 683 784 609" name="phone" id="phone" class="form-input">
           </div>
         </form>
@@ -106,6 +110,14 @@
           <small class="step-option__cost">$15/mo</small>
           <small class="step-option__giveaway">2 months free</small>
         </div>
+        <div class="step-section__plan-switch">
+          <span class="plan-switch__label plan-switch__label--active">Monthly</span>
+          <label class="plan-switch__switch">
+            <input type="checkbox" role="switch" id="plan-switch__input" title="switch plan" placeholder="">
+            <span class="plan-switch__slider"></span>
+          </label>
+          <span class="plan-switch__label">Yearly</span>
+        </div>
       </div>
     </section>
     <!-- Step 2 end -->
@@ -117,24 +129,27 @@
         <p class="step-section__sub-title">Add-ons help enhance your gaming experience.</p>
       </div>
       <div class="step-section__form-container">
-        <form action="" id="add-ons-from">
+        <form action="" id="add-ons-form">
           <div class="form-control">
-            <input type="checkbox" name="online-service" id="online-service" class="form-input">
-            <label for="online-service" class="form-label">Online service</label>
-            <small class="add-on__description">Access to multiplayer games</small>
-            <p class="add-on__cost">+$1/mo</p>
+            <input type="checkbox" name="online-service" id="online-service" class="add-ons__form-input">
+            <span class="checkmark"></span>
+            <label for="online-service" class="add-ons__form-label">Online service</label>
+            <small class="add-ons__description">Access to multiplayer games</small>
+            <p class="add-ons__cost">+$1/mo</p>
           </div>
           <div class="form-control">
-            <input type="checkbox" name="storage-add-on" id="storage-add-on" class="form-input">
-            <label for="storage-add-on" class="form-label">Larger storage</label>
-            <small class="add-on__description">Extra 1TB of cloud save</small>
-            <p class="add-on__cost">+$2/mo</p>
+            <input type="checkbox" name="storage-add-on" id="storage-add-on" class="add-ons__form-input">
+            <span class="checkmark"></span>
+            <label for="storage-add-on" class="add-ons__form-label">Larger storage</label>
+            <small class="add-ons__description">Extra 1TB of cloud save</small>
+            <p class="add-ons__cost">+$2/mo</p>
           </div>
           <div class="form-control">
-            <input type="checkbox" name="online-service" id="online-service" class="form-input">
-            <label for="online-service" class="form-label">Customizable Profile</label>
-            <small class="add-on__description">Custom theme on your profile</small>
-            <p class="add-on__cost">+$2/mo</p>
+            <input type="checkbox" name="customizable-service" id="customizable-service" class="add-ons__form-input">
+            <span class="checkmark"></span>
+            <label for="customizable-service" class="add-ons__form-label">Customizable Profile</label>
+            <small class="add-ons__description">Custom theme on your profile</small>
+            <p class="add-ons__cost">+$2/mo</p>
           </div>
         </form>
       </div>
@@ -157,7 +172,7 @@
             $9/mo
           </p>
         </div>
-        <div class="option-summary__item">
+        <div class="option-summary__item--add-ons">
           <p class="option-summary__title">
             Online service
           </p>
@@ -165,7 +180,7 @@
             +$1/mo
           </p>
         </div>
-        <div class="option-summary__item">
+        <div class="option-summary__item--add-ons">
           <p class="option-summary__title">
             Larger storage
           </p>
@@ -182,8 +197,8 @@
     <!-- Step 4 end -->
 
     <!-- Step 5 start -->
-    <section class="step-section" id="step-section-5" data-step="5">
-      <div class="step-section__thanks">
+    <section class="step-section active-step-content" id="step-section-5" data-step="5">
+      <div class="step-section__thanks-container">
         <img src="assets/images/icon-thank-you.svg" alt="circle red subscription check">
         <p class="thanks__title">Thank you!</p>
         <p class="thanks__text">Thanks for confirming your subscription! We hope you have fun
@@ -197,15 +212,15 @@
 
   <!-- CTAs start here -->
   <section class="cta-section">
-    <button class="cta-btn cta-btn--back">Go back</button>
-    <button class="cta-btn cta-btn--confirm">Confirm</button>
+    <button type="button" class="cta-btn cta-btn--back">Go back</button>
+    <button type="button" class="cta-btn cta-btn--next-confirm">Next Step</button>
   </section>
 
 
-  <div class="attribution">
+  <!-- <div class="attribution">
     Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
     Coded by <a href="#">Your Name Here</a>.
-  </div>
+  </div> -->
 </body>
 
 </html>
