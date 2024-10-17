@@ -1,0 +1,26 @@
+@font-face {
+	font-family: 'Ubuntu';
+	src: url('../assets/fonts/Ubuntu-Regular.ttf') format('ttf')
+		url('../assets/fonts/Ubuntu-Medium.ttf') format('ttf')
+		url('../assets/fonts/Ubuntu-Medium.ttf') format('ttf');
+	font-weight: 400;
+	font-style: normal;
+}
+
+*,
+*::after,
+*::before {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 62.5%; /* making 1rem equals 10px for better */
+}
+
+body {
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 1.6rem;
+	background-color: var(--magnolia);
+}

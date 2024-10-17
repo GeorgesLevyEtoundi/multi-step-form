@@ -1,0 +1,418 @@
+/*****************
+** sidebar styles 
+ *****************/
+.sidebar {
+	background-image: url('../assets/images/bg-sidebar-mobile.svg');
+	background-size: cover;
+	background-position: top center;
+	background-repeat: no-repeat;
+	display: flex;
+	justify-content: center;
+	height: 18rem;
+	padding-top: 3.2rem;
+}
+
+/* step items container */
+.sidebar__step-items-container {
+	display: flex;
+	gap: 2rem;
+}
+
+/* sidebar item */
+.sidebar__step-item {
+	border: 2px solid var(--white);
+	color: var(--white);
+	border-radius: 50%;
+	width: 4rem;
+	height: 4rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+
+	/* hover state */
+	&:hover {
+		background-color: var(--light-blue);
+		color: var(--marine-blue);
+		font-weight: 600;
+	}
+}
+
+/* active step */
+.active-step {
+	background-color: var(--light-blue);
+	color: var(--marine-blue);
+	font-weight: 600;
+}
+
+/* sidebar step and sidebar name */
+.step-item__step,
+.step-item__name {
+	display: none;
+}
+
+/*****************
+** step section styles
+******************/
+.step-section {
+	width: 95%;
+	margin: -7.5rem auto 0 auto;
+	border-radius: 1rem;
+	background-color: var(--white);
+	padding: 3.2rem 2.4rem;
+	display: none;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.active-step-content {
+	display: block;
+}
+
+/*****************
+** step 1 content - form styles
+******************/
+.step-section__title-container {
+	margin-bottom: 3.2rem;
+}
+
+.step-section__title {
+	font-size: 2.4rem;
+	font-weight: 700;
+	margin-bottom: 1.6rem;
+	color: var(--marine-blue);
+}
+
+.step-section__sub-title {
+	color: var(--cool-gray);
+	font-size: 1.8rem;
+	line-height: 2.5rem;
+}
+
+.form-control {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	margin-bottom: 1.6rem;
+}
+
+.form-label {
+	display: flex;
+	justify-content: space-between;
+	font-size: var(--body-font-size-mobile);
+}
+
+.form-input {
+	border: 1px solid var(--light-gray);
+	padding: 8px 1.6rem;
+	border-radius: 0.4rem;
+	font-size: var(--body-font-size-mobile);
+	color: var(--marine-blue);
+	font-weight: 500;
+
+	&:focus {
+		outline: none;
+		border: 1px solid var(--purplish-blue);
+	}
+}
+
+.form-error-text {
+	color: var(--strawberry-red);
+	display: none;
+}
+
+/*****************
+** CTAs styles
+******************/
+.cta-section {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	background-color: var(--white);
+	padding: 1.6rem;
+	display: flex;
+	justify-content: space-between;
+}
+
+.cta-btn {
+	border: none;
+	padding: 1.2rem 1.6rem;
+	border-radius: 4px;
+	font-size: var(--body-font-size-mobile);
+	cursor: pointer;
+}
+
+.cta-btn--back {
+	background-color: transparent;
+	color: var(--cool-gray);
+}
+
+.cta-btn--next-confirm {
+	background-color: var(--marine-blue);
+	color: var(--white);
+}
+
+/*****************
+** step 2 content style
+******************/
+.step-section__step-option {
+	border: 1px solid var(--light-gray);
+	padding: 1.6rem;
+	border-radius: 8px;
+	display: grid;
+	grid-template-columns: auto 1fr;
+	grid-template-rows: repeat(3, auto);
+	grid-template-areas: 'image title' 'image cost' 'image giveaway';
+	column-gap: 1.6rem;
+	row-gap: 4px;
+
+	&.selected {
+		background-color: var(--alabaster);
+		border: 1px solid var(--purplish-blue);
+	}
+
+	&:not(:last-child) {
+		margin-bottom: 1.6rem;
+	}
+}
+
+.step-option__image {
+	grid-area: image;
+}
+
+.step-option__title {
+	grid-area: title;
+	font-weight: 700;
+	color: var(--marine-blue);
+}
+
+.step-option__cost {
+	grid-area: cost;
+	color: var(--cool-gray);
+}
+
+.step-option__giveaway {
+	grid-area: giveaway;
+	color: var(--marine-blue);
+	display: none;
+}
+
+.step-section__plan-switch {
+	padding: 2.4rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 8px;
+	background-color: var(--alabaster);
+}
+
+.plan-switch__label {
+	margin: 0 2rem;
+	font-size: 1.6rem;
+	color: var(--cool-gray);
+}
+
+.plan-switch__label--active {
+	font-weight: 700;
+	color: var(--marine-blue);
+}
+
+.plan-switch__switch {
+	position: relative;
+	display: inline-block;
+	width: 4.5rem;
+	height: 2.4rem;
+}
+
+.plan-switch__switch input {
+	display: none;
+}
+
+.plan-switch__slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: var(--marine-blue);
+	transition: 0.4s;
+	border-radius: 3.4rem;
+}
+
+.plan-switch__slider:before {
+	position: absolute;
+	content: '';
+	height: 1.6rem;
+	width: 1.6rem;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	transition: 0.4s;
+	border-radius: 50%;
+}
+
+.plan-switch__switch input:checked + .plan-switch__slider:before {
+	transform: translateX(2.1rem);
+}
+
+/*****************
+** step 3 content style
+******************/
+#step-section-3 #add-ons-form .form-control {
+	display: grid;
+	grid-template-columns: repeat(3, auto);
+	grid-template-rows: repeat(2, auto);
+	grid-template-areas:
+		'checkbox title cost'
+		'checkbox description cost';
+	column-gap: 1.6rem;
+	border: 1px solid var(--light-gray);
+	border-radius: 8px;
+	padding: 8px;
+}
+
+.add-ons__form-input {
+	grid-area: checkbox;
+	opacity: 0;
+	cursor: pointer;
+	align-self: center;
+	z-index: 1;
+	width: 2.4rem;
+	height: 2.4rem;
+}
+
+.add-ons__form-label {
+	grid: title;
+}
+
+.add-ons__description {
+	grid-area: description;
+}
+
+.add-ons__cost {
+	grid-area: cost;
+	align-self: center;
+	font-size: 1.4rem;
+	color: var(--purplish-blue);
+}
+
+.checkmark {
+	position: relative;
+	display: block;
+	grid-area: checkbox;
+	align-self: center;
+	width: 2.4rem;
+	height: 2.4rem;
+	border-radius: 4px;
+	border: 1px solid var(--light-gray);
+	z-index: 0;
+}
+
+.add-ons__form-input:checked + .checkmark {
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: var(--purplish-blue);
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1em' height='1em' viewBox='0 0 12 12'%3E%3Cpath fill='white' d='M9.765 3.205a.75.75 0 0 1 .03 1.06l-4.25 4.5a.75.75 0 0 1-1.075.015L2.22 6.53a.75.75 0 0 1 1.06-1.06l1.705 1.704l3.72-3.939a.75.75 0 0 1 1.06-.03'/%3E%3C/svg%3E");
+	background-size: contain;
+}
+
+#step-section-3 #add-ons-form .form-control:has(.add-ons__form-input:checked) {
+	border: 1px solid var(--purplish-blue);
+}
+
+/*****************
+** step 4 content style
+******************/
+.step-section__options-summary-container {
+	padding: 2.4rem;
+	background-color: var(--alabaster);
+	border-radius: 8px;
+}
+
+.option-summary__item {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	grid-template-rows: auto auto;
+	grid-template-areas:
+		'plan cost'
+		'link cost';
+	border-bottom: 1px solid var(--light-gray);
+	margin-bottom: 1.6rem;
+	padding-bottom: 8px;
+	font-weight: 700;
+	color: var(--marine-blue);
+}
+
+.option-summary__title {
+	grid-area: plan;
+}
+
+.option-summary__link {
+	grid-area: link;
+	font-weight: 400;
+	color: var(--cool-gray);
+
+	&:active,
+	&:visited {
+		color: var(--cool-gray);
+	}
+}
+
+.option-summary__cost {
+	grid-area: cost;
+	justify-self: end;
+	align-self: center;
+	font-size: 1.4rem;
+}
+
+.option-summary__item--add-ons {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	color: var(--cool-gray);
+
+	&:last-child {
+		margin-top: 1.6rem;
+	}
+
+	& .option-summary__cost {
+		color: var(--marine-blue) !important;
+		font-weight: 500 !important;
+	}
+}
+
+.total-option-cost__container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	color: var(--cool-gray);
+	margin: 3.2rem 2.4rem 0 2.4rem;
+
+	& .total-amount {
+		font-weight: 700;
+		color: var(--purplish-blue);
+	}
+}
+
+/*****************
+** step 5 content style
+******************/
+.step-section__thanks-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2.4rem;
+}
+.thanks__title {
+	font-size: 2.4rem;
+	font-weight: 700;
+	color: var(--marine-blue);
+}
+
+.thanks__text {
+	color: var(--cool-gray);
+	line-height: 2.5rem;
+	font-size: 1.7rem;
+	text-align: center;
+}
