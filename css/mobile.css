@@ -95,9 +95,9 @@
 	margin-bottom: 1.6rem;
 }
 
-.form-label {
+.add-ons__form-label {
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-start;
 	font-size: var(--body-font-size-mobile);
 }
 
@@ -111,13 +111,23 @@
 
 	&:focus {
 		outline: none;
-		border: 1px solid var(--purplish-blue);
+		border: 1px solid var(--light-gray);
 	}
 }
 
+.form-input.error {
+	outline: 1px solid var(--strawberry-red);
+}
+
+.form-input.success {
+	outline: 1px solid var(--lime-green);
+}
+
 .form-error-text {
+	display: block;
+	margin-left: auto;
 	color: var(--strawberry-red);
-	display: none;
+	visibility: hidden;
 }
 
 /*****************
@@ -148,8 +158,15 @@
 }
 
 .cta-btn--next-confirm {
+	background-color: var(--light-gray);
+	color: var(--cool-gray);
+	cursor: not-allowed;
+}
+
+.cta-btn--next-confirm.valid {
 	background-color: var(--marine-blue);
 	color: var(--white);
+	cursor: pointer;
 }
 
 /*****************

@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="CSS/variables.css">
   <link rel="stylesheet" href="CSS/globals.css">
   <link rel="stylesheet" href="CSS/mobile.css">
+  <script src="/JS/script.js" defer></script>
 
   <title>Frontend Mentor | Multi-step form</title>
 
@@ -58,7 +59,7 @@
     <!-- Sidebar end -->
 
     <!-- Step 1 start -->
-    <section class="step-section" id="step-section-1" data-step="1">
+    <section class="step-section active-step-content" id="step-section-1" data-step="1">
       <div class="step-section__title-container">
         <p class="step-section__title">Personal info</p>
         <p class="step-section__sub-title">Please provide your name, email address, and phone number.</p>
@@ -76,7 +77,7 @@
             <input type="text" placeholder="e.g. etoundioyonogl@email.com" name="email" id="email" class="form-input">
           </div>
           <div class="form-control">
-            <label for="phone" class="form-label">Phone Number <span class="form-error-text">This is field is
+            <label for="phone" class="add-ons__form-label">Phone Number <span class="form-error-text">This is field is
                 required</span></label>
             <input type="text" placeholder="e.g. +237 683 784 609" name="phone" id="phone" class="form-input">
           </div>
@@ -197,7 +198,7 @@
     <!-- Step 4 end -->
 
     <!-- Step 5 start -->
-    <section class="step-section active-step-content" id="step-section-5" data-step="5">
+    <section class="step-section" id="step-section-5" data-step="5">
       <div class="step-section__thanks-container">
         <img src="assets/images/icon-thank-you.svg" alt="circle red subscription check">
         <p class="thanks__title">Thank you!</p>
@@ -213,7 +214,7 @@
   <!-- CTAs start here -->
   <section class="cta-section">
     <button type="button" class="cta-btn cta-btn--back">Go back</button>
-    <button type="button" class="cta-btn cta-btn--next-confirm">Next Step</button>
+    <button type="button" class="cta-btn cta-btn--next-confirm" disabled>Next Step</button>
   </section>
 
 
