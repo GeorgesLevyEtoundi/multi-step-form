@@ -20,8 +20,7 @@ const phoneErrorText = document.querySelector(
 );
 const backBtn = document.querySelector('.cta-btn--back');
 const nextBtn = document.querySelector('.cta-btn--next-confirm');
-// update active step number
-// update active step section
+const plans = document.querySelectorAll('.step-section__step-option');
 
 // check if all inputs are valid to enable next btn
 function areInputSiblingsValid(currentInput) {
@@ -220,4 +219,41 @@ backBtn.addEventListener('click', () => {
 
 	// update the active step content
 	updateActiveStepContent(activeStepNumber);
+});
+
+// deselect other plans
+function deselectOtherPlans(currentPlan) {
+	// plan siblings
+	const siblings = Array.from(plans).filter(
+		plan => plan.dataset.plan != currentPlan
+	);
+
+	// deselect other plans
+	siblings.forEach(sibling => {
+		sibling.classList.remove('selected');
+	});
+}
+
+// select the plans
+plans.forEach(plan => {
+	plan.addEventListener('click', () => {
+		if (plan.dataset.plan === 'arcade') {
+			// deselect other plan
+			deselectOtherPlans(plan.dataset.plan);
+			// select the appropriate plan
+			plan.classList.add('selected');
+		} else if (plan.dataset.plan === 'advanced') {
+			// deselect other plan
+			deselectOtherPlans(plan.dataset.plan);
+
+			// select the appropriate plan
+			plan.classList.add('selected');
+		} else if (plan.dataset.plan === 'pro') {
+			// deselect other plan
+			deselectOtherPlans(plan.dataset.plan);
+
+			// select the appropriate plan
+			plan.classList.add('selected');
+		}
+	});
 });
