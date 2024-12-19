@@ -208,6 +208,10 @@
 	color: var(--cool-gray);
 }
 
+.step-option__cost .yearly-fee {
+	display: none;
+}
+
 .step-option__giveaway {
 	grid-area: giveaway;
 	color: var(--marine-blue);
@@ -229,7 +233,7 @@
 	color: var(--cool-gray);
 }
 
-.plan-switch__label--active {
+.plan-switch__label.active {
 	font-weight: 700;
 	color: var(--marine-blue);
 }

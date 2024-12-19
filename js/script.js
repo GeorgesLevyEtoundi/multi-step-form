@@ -21,6 +21,21 @@ const phoneErrorText = document.querySelector(
 const backBtn = document.querySelector('.cta-btn--back');
 const nextBtn = document.querySelector('.cta-btn--next-confirm');
 const plans = document.querySelectorAll('.step-section__step-option');
+const planSwitchInput = document.getElementById('plan-switch__input');
+let planSpan = 'monthly';
+const spanPlans = document.querySelectorAll('.plan-switch__label');
+const planOptionCostTexts = document.querySelectorAll('.step-option__cost');
+const planOptionMonthFee = document.querySelectorAll(
+	'.step-option__cost .monthly-fee'
+);
+const planOptionYearFee = document.querySelectorAll(
+	'.step-option__cost .yearly-fee'
+);
+const addOns = document.querySelectorAll('.add-ons__form-input');
+
+/*******************************************************
+ ************************** Step 1
+ ******************************************************/
 
 // check if all inputs are valid to enable next btn
 function areInputSiblingsValid(currentInput) {
@@ -171,6 +186,137 @@ infoPhoneNumber.addEventListener('blur', () => {
 	enableNextBtnStepOne(infoPhoneNumber);
 });
 
+/*******************************************************
+ ************************** Step 2
+ ******************************************************/
+
+// deselect other plans
+function deselectOtherPlans(currentPlan) {
+	// plan siblings
+	const siblings = Array.from(plans).filter(
+		plan => plan.dataset.plan != currentPlan
+	);
+
+	// deselect other plans
+	siblings.forEach(sibling => {
+		sibling.classList.remove('selected');
+	});
+}
+
+// select the plans
+plans.forEach(plan => {
+	plan.addEventListener('click', () => {
+		if (plan.dataset.plan === 'arcade') {
+			// deselect other plan
+			deselectOtherPlans(plan.dataset.plan);
+			// select the appropriate plan
+			plan.classList.add('selected');
+
+			// enable next btn
+			enableNextBtnStepTwo();
+		} else if (plan.dataset.plan === 'advanced') {
+			// deselect other plan
+			deselectOtherPlans(plan.dataset.plan);
+
+			// select the appropriate plan
+			plan.classList.add('selected');
+
+			// enable next btn
+			enableNextBtnStepTwo();
+		} else if (plan.dataset.plan === 'pro') {
+			// deselect other plan
+			deselectOtherPlans(plan.dataset.plan);
+
+			// select the appropriate plan
+			plan.classList.add('selected');
+
+			// enable next btn
+			enableNextBtnStepTwo();
+		}
+	});
+});
+
+// switch plan span
+planSwitchInput.addEventListener('click', () => {
+	const checked = planSwitchInput.checked;
+
+	if (checked) {
+		planSpan = 'yearly';
+
+		// change plans span
+		spanPlans.forEach(span => {
+			span.classList.remove('active');
+		});
+
+		spanPlans[1].classList.add('active');
+
+		// change span on all plans
+		planOptionMonthFee.forEach(planOptionMonth => {
+			planOptionMonth.style.display = 'none';
+		});
+
+		planOptionYearFee.forEach(planOptionYear => {
+			planOptionYear.style.display = 'block';
+		});
+	} else {
+		planSpan = 'monthly';
+
+		spanPlans.forEach(span => {
+			span.classList.remove('active');
+		});
+
+		spanPlans[0].classList.add('active');
+
+		// change span on all plans
+		planOptionYearFee.forEach(planOptionYear => {
+			planOptionYear.style.display = 'none';
+		});
+
+		planOptionMonthFee.forEach(planOptionMonth => {
+			planOptionMonth.style.display = 'block';
+		});
+	}
+});
+
+// enable next button
+function enableNextBtnStepTwo() {
+	// check if one the plan is selected
+	plans.forEach(plan => {
+		if (plan.classList.contains('selected')) {
+			nextBtn.classList.add('valid');
+
+			// remove disable from HTML tag attributes
+			nextBtn.removeAttribute('disabled');
+		}
+	});
+}
+
+/***********************************************
+ ********************* Step 3
+ **********************************************/
+
+addOns.forEach(addOn => {
+	if (addOn.checked) {
+	}
+});
+
+// enable next button
+function enableNextBtnStepTwo() {
+	// check if one the plan is selected
+	plans.forEach(plan => {
+		if (plan.classList.contains('selected')) {
+			nextBtn.classList.add('valid');
+
+			// remove disable from HTML tag attributes
+			nextBtn.removeAttribute('disabled');
+		}
+	});
+}
+
+/***********************************************
+ ********************* Global form elements
+ **********************************************/
+
 // update active step number
 function updateActiveStepNumber(stepNumber) {
 	steps.forEach(step => {
@@ -219,41 +365,4 @@ backBtn.addEventListener('click', () => {
 
 	// update the active step content
 	updateActiveStepContent(activeStepNumber);
-});
-
-// deselect other plans
-function deselectOtherPlans(currentPlan) {
-	// plan siblings
-	const siblings = Array.from(plans).filter(
-		plan => plan.dataset.plan != currentPlan
-	);
-
-	// deselect other plans
-	siblings.forEach(sibling => {
-		sibling.classList.remove('selected');
-	});
-}
-
-// select the plans
-plans.forEach(plan => {
-	plan.addEventListener('click', () => {
-		if (plan.dataset.plan === 'arcade') {
-			// deselect other plan
-			deselectOtherPlans(plan.dataset.plan);
-			// select the appropriate plan
-			plan.classList.add('selected');
-		} else if (plan.dataset.plan === 'advanced') {
-			// deselect other plan
-			deselectOtherPlans(plan.dataset.plan);
-
-			// select the appropriate plan
-			plan.classList.add('selected');
-		} else if (plan.dataset.plan === 'pro') {
-			// deselect other plan
-			deselectOtherPlans(plan.dataset.plan);
-
-			// select the appropriate plan
-			plan.classList.add('selected');
-		}
-	});
 });
