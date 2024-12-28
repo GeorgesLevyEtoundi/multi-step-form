@@ -17,3 +17,7 @@
 
 # ignore README template
 README-template.md
+
+# my files
+.vscode/
+JS/draft.js

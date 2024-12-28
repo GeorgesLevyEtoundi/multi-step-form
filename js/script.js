@@ -1,368 +1,432 @@
-const steps = document.querySelectorAll('.sidebar__step-item');
-const stepSections = document.querySelectorAll('.step-section');
-let activeStepNumber = 1;
-const personalInfoForm = document.querySelectorAll('#personal-info-form');
-const personalInfoFormInputs = document.querySelectorAll(
-	'#personal-info-form input'
-);
-const infoName = document.getElementById('name');
-const infoEmail = document.getElementById('email');
-const infoPhoneNumber = document.getElementById('phone');
-const formErrorTexts = document.querySelectorAll('.form-error-text');
-const nameErrorText = document.querySelector(
-	'.add-ons__form-label[for="name"] span'
-);
-const emailErrorText = document.querySelector(
-	'.add-ons__form-label[for="email"] span'
-);
-const phoneErrorText = document.querySelector(
-	'.add-ons__form-label[for="phone"] span'
-);
-const backBtn = document.querySelector('.cta-btn--back');
-const nextBtn = document.querySelector('.cta-btn--next-confirm');
-const plans = document.querySelectorAll('.step-section__step-option');
-const planSwitchInput = document.getElementById('plan-switch__input');
-let planSpan = 'monthly';
-const spanPlans = document.querySelectorAll('.plan-switch__label');
-const planOptionCostTexts = document.querySelectorAll('.step-option__cost');
-const planOptionMonthFee = document.querySelectorAll(
-	'.step-option__cost .monthly-fee'
-);
-const planOptionYearFee = document.querySelectorAll(
-	'.step-option__cost .yearly-fee'
-);
-const addOns = document.querySelectorAll('.add-ons__form-input');
+document.addEventListener('DOMContentLoaded', () => {
+	const stepNumbers = document.querySelectorAll('.sidebar__step-item');
+	const stepContents = document.querySelectorAll('.step-section');
+	let activeStepNumber = 1;
 
-/*******************************************************
- ************************** Step 1
- ******************************************************/
-
-// check if all inputs are valid to enable next btn
-function areInputSiblingsValid(currentInput) {
-	const siblings = Array.from(personalInfoFormInputs).filter(
-		sibling => sibling != currentInput
+	const personalInfoForm = document.getElementById('personal-info-form');
+	const personalInfoFormInputs = document.querySelectorAll(
+		'#personal-info-form input'
+	);
+	const nameInput = document.getElementById('name');
+	const emailInput = document.getElementById('email');
+	const phoneNumberInput = document.getElementById('phone');
+	const nameErrorText = document.querySelector(
+		'.add-ons__form-label[for="name"] span'
+	);
+	const emailErrorText = document.querySelector(
+		'.add-ons__form-label[for="email"] span'
+	);
+	const phoneErrorText = document.querySelector(
+		'.add-ons__form-label[for="phone"] span'
 	);
 
-	const validSiblings = siblings.every(sibling =>
-		sibling.classList.contains('success')
+	const plans = document.querySelectorAll('.step-section__step-option');
+	const planSwitchInput = document.getElementById('plan-switch__input');
+	let planSpan = 'monthly';
+	const spanPlans = document.querySelectorAll('.plan-switch__label');
+	const planOptionCostTexts = document.querySelectorAll('.step-option__cost');
+	const planOptionMonthFee = document.querySelectorAll(
+		'.step-option__cost .monthly-fee'
 	);
+	const planOptionYearFee = document.querySelectorAll(
+		'.step-option__cost .yearly-fee'
+	);
+	const monthlyPlanFee = [9, 12, 15];
+	const yearlyPlanFee = [90, 120, 150];
 
-	if (validSiblings) {
+	const backBtn = document.querySelector('.cta-btn--back');
+	const nextBtn = document.querySelector('.cta-btn--next-confirm');
+
+	showCorrectStepNumber();
+
+	//*******************************************************
+	//************************** Step 1
+	//******************************************************
+
+	// checks if name input is valid
+	function isNameValid() {
+		// if name empty
+		if (nameInput.value === '') {
+			nameInput.classList.add('error');
+
+			nameErrorText.textContent = 'Name is required';
+			nameErrorText.style.visibility = 'visible';
+
+			return false;
+		} else if (nameInput.value.length < 3) {
+			// if name length is less than 3 characters
+			nameInput.classList.add('error');
+
+			nameErrorText.textContent = 'Name must be at least 3 characters';
+			nameErrorText.style.visibility = 'visible';
+
+			return false;
+		}
+
+		// remove error message
+		nameInput.classList.remove('error');
+
+		nameErrorText.style.visibility = 'hidden';
+
+		// if name is valid
 		return true;
-	} else {
+	}
+
+	// checks if email input is valid
+	function isEmailValid() {
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+		// if email is empty
+		if (emailInput.value === '') {
+			emailInput.classList.add('error');
+
+			emailErrorText.textContent = 'Email is required';
+			emailErrorText.style.visibility = 'visible';
+
+			return false;
+		} else if (!emailRegex.test(emailInput.value)) {
+			// if email is not valid
+			emailInput.classList.add('error');
+
+			emailErrorText.textContent = 'Email is not valid';
+			emailErrorText.style.visibility = 'visible';
+
+			return false;
+		}
+
+		// remove errors
+		emailInput.classList.remove('error');
+
+		emailErrorText.style.visibility = 'hidden';
+
+		// if email is valid
+		return true;
+	}
+
+	// checks if phone number input is valid
+	function isPhoneNumberValid() {
+		// if phone number is empty
+		if (phoneNumberInput.value === '') {
+			phoneNumberInput.classList.add('error');
+
+			phoneErrorText.textContent = 'Phone number is required';
+			phoneErrorText.style.visibility = 'visible';
+
+			return false;
+		} else if (phoneNumberInput.value.length < 9) {
+			// if phone number length is less than 9 characters
+			phoneNumberInput.classList.add('error');
+
+			phoneErrorText.textContent = 'Phone must be at least 9 characters';
+			phoneErrorText.style.visibility = 'visible';
+
+			return false;
+		}
+
+		// remove errors
+		phoneNumberInput.classList.remove('error');
+
+		phoneErrorText.style.visibility = 'hidden';
+
+		// if phone number is valid
+		return true;
+	}
+
+	// checks if the form in step 1 is valid
+	function isFormValid() {
+		// if all the form fields are valid
+		if (isNameValid() && isEmailValid() && isPhoneNumberValid()) {
+			return true;
+		}
+
 		return false;
 	}
-}
 
-// enable next button
-function enableNextBtnStepOne(input) {
-	if (areInputSiblingsValid(input)) {
-		nextBtn.classList.add('valid');
+	//*******************************************************
+	//************************** Step 2
+	//******************************************************
+	function switchPlansFee(planSpan) {
+		// if plan span is monthly
+		if (planSpan === 'monthly') {
+			plans.forEach((plan, index) => {
+				const planDetail = plan.querySelector('.step-option__cost');
+				planDetail.textContent = `$${monthlyPlanFee[index]}/mo`;
+			});
+		}
 
-		// remove disable from HTML tag attributes
-		nextBtn.removeAttribute('disabled');
-	}
-}
-
-// Step 1 Personal info, on name input change
-infoName.addEventListener('input', e => {
-	const name = e.target.value;
-
-	if (name.length < 6) {
-		e.target.classList.add('error');
-		nameErrorText.innerHTML = 'Name must be at least 6 characters';
-		nameErrorText.style.visibility = 'visible';
-	} else {
-		e.target.classList.remove('error');
-		e.target.classList.add('success');
-		nameErrorText.style.visibility = 'hidden';
-		enableNextBtnStepOne(e.target);
-	}
-});
-
-// Step 1 Personal info, on name input blur
-infoName.addEventListener('blur', e => {
-	// name is missing
-	if (infoName.value === '') {
-		e.target.classList.remove('success');
-		e.target.classList.add('error');
-		nameErrorText.textContent = 'Name is required';
-		nameErrorText.style.visibility = 'visible';
-		return;
+		if (planSpan === 'yearly') {
+			plans.forEach((plan, index) => {
+				const planDetail = plan.querySelector('.step-option__cost');
+				planDetail.textContent = `$${yearlyPlanFee[index]}/yr`;
+			});
+		}
 	}
 
-	// invalid name
-	if (infoName.value.length < 6) {
-		infoName.classList.remove('success');
-		infoName.classList.add('error');
-		nameErrorText.innerHTML = 'Name must be at least 6 characters';
-		nameErrorText.style.visibility = 'visible';
+	// switch plan span
+	planSwitchInput.addEventListener('click', () => {
+		const checked = planSwitchInput.checked;
 
-		return;
-	}
+		if (checked) {
+			planSpan = 'yearly';
 
-	e.target.classList.remove('error');
-	e.target.classList.add('success');
-	nameErrorText.style.visibility = 'hidden';
-	enableNextBtnStepOne(infoName);
-});
+			// change plans span
+			spanPlans.forEach(span => {
+				span.classList.remove('active');
+			});
 
-// regex email validation
-function validateEmail(email) {
-	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-	return emailRegex.test(email);
-}
+			spanPlans[1].classList.add('active');
 
-// email validation on input
-infoEmail.addEventListener('input', e => {
-	//	invalid email
-	if (validateEmail(infoEmail.value)) {
-		infoEmail.classList.remove('error');
-		infoEmail.classList.add('success');
-		emailErrorText.style.visibility = 'hidden';
-		enableNextBtnStepOne(infoEmail);
-	} else {
-		emailErrorText.textContent = 'Email is not yet valid';
-		emailErrorText.style.visibility = 'visible';
-		infoEmail.classList.remove('success');
-		infoEmail.classList.add('error');
-	}
-});
+			// change span on all plans
+			switchPlansFee(planSpan);
+		} else {
+			planSpan = 'monthly';
 
-// Step 1 Personal info, email on blur
-infoEmail.addEventListener('blur', e => {
-	// email is missing
-	if (infoEmail.value === '') {
-		infoEmail.classList.remove('success');
-		infoEmail.classList.add('error');
-		emailErrorText.innerHTML = 'Email is required';
-		emailErrorText.style.visibility = 'visible';
-		return;
-	}
+			spanPlans.forEach(span => {
+				span.classList.remove('active');
+			});
 
-	//	invalid email
-	if (validateEmail(infoEmail.value)) {
-		infoEmail.classList.remove('error');
-		infoEmail.classList.add('success');
-		emailErrorText.style.visibility = 'hidden';
-		enableNextBtnStepOne(infoEmail);
-	} else {
-		emailErrorText.textContent = 'Please enter a valid email';
-		emailErrorText.style.visibility = 'visible';
-		infoEmail.classList.remove('success');
-		infoEmail.classList.add('error');
-	}
-});
+			spanPlans[0].classList.add('active');
 
-//	Step 1 Personal info, phone on input change
-infoPhoneNumber.addEventListener('input', () => {
-	if (infoPhoneNumber.value.length < 9) {
-		phoneErrorText.textContent = 'Phone must be at least 9';
-		phoneErrorText.style.visibility = 'visible';
-		infoPhoneNumber.classList.remove('success');
-		infoPhoneNumber.classList.add('error');
-		return;
-	}
-
-	infoPhoneNumber.classList.remove('error');
-	infoPhoneNumber.classList.add('success');
-	phoneErrorText.style.visibility = 'hidden';
-	enableNextBtnStepOne(infoPhoneNumber);
-});
-
-//	Step 1 Personal info, phone on blur
-infoPhoneNumber.addEventListener('blur', () => {
-	if (infoPhoneNumber.value === '') {
-		phoneErrorText.textContent = 'Phone number is required';
-		phoneErrorText.style.visibility = 'visible';
-		infoPhoneNumber.classList.remove('success');
-		infoPhoneNumber.classList.add('error');
-		return;
-	}
-
-	infoPhoneNumber.classList.remove('error');
-	infoPhoneNumber.classList.add('success');
-	phoneErrorText.style.visibility = 'hidden';
-	enableNextBtnStepOne(infoPhoneNumber);
-});
-
-/*******************************************************
- ************************** Step 2
- ******************************************************/
-
-// deselect other plans
-function deselectOtherPlans(currentPlan) {
-	// plan siblings
-	const siblings = Array.from(plans).filter(
-		plan => plan.dataset.plan != currentPlan
-	);
+			// change span on all plans
+			switchPlansFee(planSpan);
+		}
+	});
 
 	// deselect other plans
-	siblings.forEach(sibling => {
-		sibling.classList.remove('selected');
-	});
-}
+	function deselectOtherPlans(currentPlan) {
+		// plan siblings
+		const siblings = Array.from(plans).filter(
+			plan => plan.dataset.plan != currentPlan
+		);
 
-// select the plans
-plans.forEach(plan => {
-	plan.addEventListener('click', () => {
-		if (plan.dataset.plan === 'arcade') {
-			// deselect other plan
-			deselectOtherPlans(plan.dataset.plan);
-			// select the appropriate plan
-			plan.classList.add('selected');
-
-			// enable next btn
-			enableNextBtnStepTwo();
-		} else if (plan.dataset.plan === 'advanced') {
-			// deselect other plan
-			deselectOtherPlans(plan.dataset.plan);
-
-			// select the appropriate plan
-			plan.classList.add('selected');
-
-			// enable next btn
-			enableNextBtnStepTwo();
-		} else if (plan.dataset.plan === 'pro') {
-			// deselect other plan
-			deselectOtherPlans(plan.dataset.plan);
-
-			// select the appropriate plan
-			plan.classList.add('selected');
-
-			// enable next btn
-			enableNextBtnStepTwo();
-		}
-	});
-});
-
-// switch plan span
-planSwitchInput.addEventListener('click', () => {
-	const checked = planSwitchInput.checked;
-
-	if (checked) {
-		planSpan = 'yearly';
-
-		// change plans span
-		spanPlans.forEach(span => {
-			span.classList.remove('active');
-		});
-
-		spanPlans[1].classList.add('active');
-
-		// change span on all plans
-		planOptionMonthFee.forEach(planOptionMonth => {
-			planOptionMonth.style.display = 'none';
-		});
-
-		planOptionYearFee.forEach(planOptionYear => {
-			planOptionYear.style.display = 'block';
-		});
-	} else {
-		planSpan = 'monthly';
-
-		spanPlans.forEach(span => {
-			span.classList.remove('active');
-		});
-
-		spanPlans[0].classList.add('active');
-
-		// change span on all plans
-		planOptionYearFee.forEach(planOptionYear => {
-			planOptionYear.style.display = 'none';
-		});
-
-		planOptionMonthFee.forEach(planOptionMonth => {
-			planOptionMonth.style.display = 'block';
+		// deselect other plans
+		siblings.forEach(sibling => {
+			sibling.classList.remove('selected');
 		});
 	}
-});
 
-// enable next button
-function enableNextBtnStepTwo() {
-	// check if one the plan is selected
+	// select the plans
 	plans.forEach(plan => {
-		if (plan.classList.contains('selected')) {
-			nextBtn.classList.add('valid');
+		plan.addEventListener('click', () => {
+			if (plan.dataset.plan === 'arcade') {
+				// deselect other plan
+				deselectOtherPlans(plan.dataset.plan);
+				// select the appropriate plan
+				plan.classList.add('selected');
+			} else if (plan.dataset.plan === 'advanced') {
+				// deselect other plan
+				deselectOtherPlans(plan.dataset.plan);
 
-			// remove disable from HTML tag attributes
-			nextBtn.removeAttribute('disabled');
-		}
+				// select the appropriate plan
+				plan.classList.add('selected');
+			} else if (plan.dataset.plan === 'pro') {
+				// deselect other plan
+				deselectOtherPlans(plan.dataset.plan);
+
+				// select the appropriate plan
+				plan.classList.add('selected');
+			}
+		});
 	});
-}
 
-/***********************************************
- ********************* Step 3
- **********************************************/
+	function isPlanSelected() {
+		const selectedPlan = Array.from(plans).find(plan =>
+			plan.classList.contains('selected')
+		);
 
-addOns.forEach(addOn => {
-	if (addOn.checked) {
+		if (selectedPlan === undefined) {
+			alert('You must select a plan to continue');
+
+			return false;
+		}
+
+		return true;
 	}
-});
 
-// enable next button
-function enableNextBtnStepTwo() {
-	// check if one the plan is selected
-	plans.forEach(plan => {
-		if (plan.classList.contains('selected')) {
-			nextBtn.classList.add('valid');
+	// buttons events
+	nextBtn.addEventListener('click', () => nextStep());
+	backBtn.addEventListener('click', () => previousStep());
 
-			// remove disable from HTML tag attributes
-			nextBtn.removeAttribute('disabled');
-		}
-	});
-}
+	// show the next active step content
+	function nextStep() {
+		// current active step
+		let currentActiveStep = Array.from(stepNumbers).find(stepNumber =>
+			stepNumber.classList.contains('active-step')
+		);
 
-/***********************************************
- ********************* Global form elements
- **********************************************/
+		// current active step content
+		let currentActiveStepContent = Array.from(stepContents).find(
+			stepContent => stepContent.classList.contains('active-step-content')
+		);
 
-// update active step number
-function updateActiveStepNumber(stepNumber) {
-	steps.forEach(step => {
-		if (step.classList.contains('active-step')) {
-			step.classList.remove('active-step');
-		}
+		// step 1
+		if (+currentActiveStep.dataset.step === 1) {
+			// check if form is valid
+			if (isFormValid()) {
+				// save to local storage
+				saveFormData();
 
-		if (+step.dataset.step === stepNumber) {
-			step.classList.add('active-step');
-		}
-	});
-}
+				// update active step
+				showNextStep(currentActiveStep, currentActiveStepContent);
 
-// updates the active step content
-function updateActiveStepContent(activeStepNumber) {
-	stepSections.forEach(section => {
-		if (section.classList.contains('active-step-content')) {
-			section.classList.remove('active-step-content');
+				// update active step number
+				activeStepNumber++;
+
+				// show back btn
+				showBackBtn();
+			}
 		}
 
-		if (+section.dataset.step === activeStepNumber) {
-			section.classList.add('active-step-content');
+		// step 2
+		if (+currentActiveStep.dataset.step === 2) {
+			// check there is a plan selected
+			if (isPlanSelected()) {
+				// update active step
+				showNextStep(currentActiveStep, currentActiveStepContent);
+
+				// update active step number
+				activeStepNumber++;
+			}
 		}
-	});
-}
 
-// next button on click
-nextBtn.addEventListener('click', () => {
-	// increase active step number
-	activeStepNumber++;
+		// step 3
+		if (+currentActiveStep.dataset.step === 3) {
+			showNextStep(currentActiveStep, currentActiveStepContent);
 
-	// update the aside active step number
-	updateActiveStepNumber(activeStepNumber);
+			// update active step number
+			activeStepNumber++;
+		}
 
-	// update the active step content
-	updateActiveStepContent(activeStepNumber);
-});
+		// step 4
+		if (+currentActiveStep.dataset.step === 4) {
+			showNextStep(currentActiveStep, currentActiveStepContent);
 
-// go back button onClick
-backBtn.addEventListener('click', () => {
-	// increase active step number
-	activeStepNumber--;
+			// update active step number
+			activeStepNumber++;
+		}
+	}
 
-	// update the aside active step number
-	updateActiveStepNumber(activeStepNumber);
+	// show the previous step content
+	function previousStep() {
+		// current active step
+		let currentActiveStep = Array.from(stepNumbers).find(stepNumber =>
+			stepNumber.classList.contains('active-step')
+		);
 
-	// update the active step content
-	updateActiveStepContent(activeStepNumber);
+		// current active step content
+		let currentActiveStepContent = Array.from(stepContents).find(
+			stepContent => stepContent.classList.contains('active-step-content')
+		);
+
+		// show back btn
+		if (+currentActiveStep.dataset.step === 2) {
+			hideBackBtn();
+		}
+
+		showPreviousStep(currentActiveStep, currentActiveStepContent);
+	}
+
+	// highlight the correct step number according to the visible content
+	function showCorrectStepNumber() {
+		const activeContentStep = Array.from(stepContents).find(content =>
+			content.classList.contains('active-step-content')
+		);
+
+		stepNumbers.forEach(stepNumber => {
+			stepNumber.classList.remove('active-step');
+		});
+
+		// highlight the active step number
+		const currentStepNumber = Array.from(stepNumbers).find(
+			stepNumber =>
+				stepNumber.dataset.step ===
+				activeContentStep.dataset.step.toString()
+		);
+		currentStepNumber.classList.add('active-step');
+	}
+
+	// hide back btn
+	function hideBackBtn() {
+		if (!backBtn.classList.contains('hidden')) {
+			backBtn.classList.add('hidden');
+		}
+	}
+
+	// show back btn
+	function showBackBtn() {
+		if (backBtn.classList.contains('hidden')) {
+			backBtn.classList.remove('hidden');
+		}
+	}
+
+	// show next step
+	function showNextStep(step, content) {
+		// is step 5
+		if (+content.dataset.step === 4) {
+			const LAST_STEP_NUMBER = Array.from(stepNumbers).find(
+				stepNumber => +stepNumber.dataset.step === 4
+			);
+			const LAST_STEP_CONTENT = Array.from(stepContents).find(
+				stepContent => +stepContent.dataset.step === 5
+			);
+			const CTA_SECTION = document.querySelector('.cta-section');
+
+			// active the last step number
+			if (!LAST_STEP_NUMBER.classList.contains('active-step')) {
+				LAST_STEP_NUMBER.classList.add('active-step');
+			}
+
+			// active the last step content
+			LAST_STEP_CONTENT.previousElementSibling.classList.remove(
+				'active-step-content'
+			);
+			LAST_STEP_CONTENT.classList.add('active-step-content');
+
+			// hide the cta section
+			CTA_SECTION.style.display = 'none';
+
+			return;
+		}
+
+		step.nextElementSibling.classList.add('active-step');
+		step.classList.remove('active-step');
+
+		// update content
+		content.nextElementSibling.classList.add('active-step-content');
+		content.classList.remove('active-step-content');
+	}
+
+	// show previous step
+	function showPreviousStep(step, content) {
+		// update step number
+		step.previousElementSibling.classList.add('active-step');
+		step.classList.remove('active-step');
+
+		// update content
+		content.previousElementSibling.classList.add('active-step-content');
+		content.classList.remove('active-step-content');
+	}
+
+	// function to save to local storage
+	function saveToLocalStorage(step = 'test') {
+		// is there already a record in local storage?
+		let storedSteps = localStorage.getItem('steps');
+		if (storedSteps) {
+			storedSteps = JSON.parse(storedSteps);
+		} else {
+			localStorage.setItem('stepOne', 'stored step one');
+		}
+	}
+
+	// save form data
+	function saveFormData() {
+		const MY_FORM_DATA = new FormData(personalInfoForm);
+		let formDataEntries = {};
+
+		for (const [KEY, VALUE] of MY_FORM_DATA) {
+			formDataEntries[KEY] = VALUE;
+		}
+
+		localStorage.setItem('stepOneData', JSON.stringify(formDataEntries));
+	}
 });
