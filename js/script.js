@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	const planOptionYearFee = document.querySelectorAll(
 		'.step-option__cost .yearly-fee'
 	);
-	const monthlyPlanFee = [9, 12, 15];
-	const yearlyPlanFee = [90, 120, 150];
+	const monthlyPlanFee = [{ arcade: 9 }, { advanced: 12 }, { pro: 15 }];
+	const yearlyPlanFee = [{ arcade: 90 }, { advanced: 120 }, { pro: 150 }];
 
 	const backBtn = document.querySelector('.cta-btn--back');
 	const nextBtn = document.querySelector('.cta-btn--next-confirm');
@@ -150,14 +150,18 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (planSpan === 'monthly') {
 			plans.forEach((plan, index) => {
 				const planDetail = plan.querySelector('.step-option__cost');
-				planDetail.textContent = `$${monthlyPlanFee[index]}/mo`;
+				planDetail.textContent = `$${
+					monthlyPlanFee[index][plan.dataset.plan]
+				}/mo`;
 			});
 		}
 
 		if (planSpan === 'yearly') {
 			plans.forEach((plan, index) => {
 				const planDetail = plan.querySelector('.step-option__cost');
-				planDetail.textContent = `$${yearlyPlanFee[index]}/yr`;
+				planDetail.textContent = `$${
+					yearlyPlanFee[index][plan.dataset.plan]
+				}/yr`;
 			});
 		}
 	}
@@ -264,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			// check if form is valid
 			if (isFormValid()) {
 				// save to local storage
-				saveFormData();
+				saveStepOne();
 
 				// update active step
 				showNextStep(currentActiveStep, currentActiveStepContent);
@@ -279,6 +283,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		// step 2
 		if (+currentActiveStep.dataset.step === 2) {
+			// save step two
+			saveStepTwo();
+
 			// check there is a plan selected
 			if (isPlanSelected()) {
 				// update active step
@@ -407,26 +414,97 @@ document.addEventListener('DOMContentLoaded', () => {
 		content.classList.remove('active-step-content');
 	}
 
-	// function to save to local storage
-	function saveToLocalStorage(step = 'test') {
-		// is there already a record in local storage?
-		let storedSteps = localStorage.getItem('steps');
-		if (storedSteps) {
-			storedSteps = JSON.parse(storedSteps);
+	// save step one
+	function saveStepOne() {
+		// step one form data
+		const MY_FORM_DATA = new FormData(personalInfoForm);
+
+		// is there a record in local storage
+		let storedStepOne = localStorage.getItem('stepOne');
+
+		if (storedStepOne) {
+			storedStepOne = JSON.parse(storedStepOne);
+
+			// update stored step one
+			for (const [KEY, VALUE] of MY_FORM_DATA) {
+				storedStepOne[KEY] = VALUE;
+			}
+
+			localStorage.setItem('stepOne', JSON.stringify(storedStepOne));
 		} else {
-			localStorage.setItem('stepOne', 'stored step one');
+			const FORM_DATA_ENTRIES = {};
+
+			for (const [KEY, VALUE] of MY_FORM_DATA) {
+				FORM_DATA_ENTRIES[KEY] = VALUE;
+			}
+
+			localStorage.setItem('stepOne', JSON.stringify(FORM_DATA_ENTRIES));
 		}
 	}
 
-	// save form data
-	function saveFormData() {
-		const MY_FORM_DATA = new FormData(personalInfoForm);
-		let formDataEntries = {};
+	// save step two
+	function saveStepTwo() {
+		let planObj = {
+			planName: '',
+			planCost: 0,
+			planSpan: '',
+		};
 
-		for (const [KEY, VALUE] of MY_FORM_DATA) {
-			formDataEntries[KEY] = VALUE;
+		// find selected plan
+		const SELECTED_PLAN = Array.from(plans).find(plan =>
+			plan.classList.contains('selected')
+		);
+
+		// is there a record in local storage
+		let storedStepTwo = localStorage.getItem('stepTwo');
+
+		if (storedStepTwo) {
+			storedStepTwo = JSON.parse(storedStepTwo);
+
+			if (planSpan === 'monthly') {
+				storedStepTwo.planName = SELECTED_PLAN.dataset.plan;
+				storedStepTwo.planCost = Object.keys(monthlyPlanFee).find(
+					key => key === SELECTED_PLAN.dataset.plan
+				);
+				storedStepTwo.planSpan = planSpan;
+
+				console.log(
+					'selected plan cost |||',
+					Object.keys(monthlyPlanFee)
+				);
+			}
+
+			if (planSpan === 'yearly') {
+				storedStepTwo.planName = SELECTED_PLAN.dataset.plan;
+				storedStepTwo.planCost = Object.keys(monthlyPlanFee).find(
+					key => key === SELECTED_PLAN.dataset.plan
+				);
+				storedStepTwo.planSpan = planSpan;
+			}
+
+			console.log('plan object |||', storedStepTwo);
+
+			localStorage.setItem('stepTwo', JSON.stringify(storedStepTwo));
+		} else {
+			if (planSpan === 'monthly') {
+				planObj.planName = SELECTED_PLAN.dataset.plan;
+				planObj.planCost = Object.keys(monthlyPlanFee).find(
+					key => key === SELECTED_PLAN.dataset.plan
+				);
+				planObj.planSpan = planSpan;
+			}
+
+			if (planSpan === 'yearly') {
+				planObj.planName = SELECTED_PLAN.dataset.plan;
+				planObj.planCost = Object.keys(monthlyPlanFee).find(
+					key => key === SELECTED_PLAN.dataset.plan
+				);
+				planObj.planSpan = planSpan;
+			}
+
+			console.log('plan object |||', planObj);
+
+			localStorage.setItem('stepTwo', JSON.stringify(planObj));
 		}
-
-		localStorage.setItem('stepOneData', JSON.stringify(formDataEntries));
 	}
 });
