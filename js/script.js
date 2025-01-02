@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const planSwitchInput = document.getElementById('plan-switch__input');
 	let planSpan = 'monthly';
 	const spanPlans = document.querySelectorAll('.plan-switch__label');
+	let selectedPlan = undefined;
 	const planOptionCostTexts = document.querySelectorAll('.step-option__cost');
 	const planOptionMonthFee = document.querySelectorAll(
 		'.step-option__cost .monthly-fee'
@@ -217,18 +218,27 @@ document.addEventListener('DOMContentLoaded', () => {
 				deselectOtherPlans(plan.dataset.plan);
 				// select the appropriate plan
 				plan.classList.add('selected');
+
+				// update selected plan
+				selectedPlan = plan;
 			} else if (plan.dataset.plan === 'advanced') {
 				// deselect other plan
 				deselectOtherPlans(plan.dataset.plan);
 
 				// select the appropriate plan
 				plan.classList.add('selected');
+
+				// update selected plan
+				selectedPlan = plan;
 			} else if (plan.dataset.plan === 'pro') {
 				// deselect other plan
 				deselectOtherPlans(plan.dataset.plan);
 
 				// select the appropriate plan
 				plan.classList.add('selected');
+
+				// update selected plan
+				selectedPlan = plan;
 			}
 		});
 	});
@@ -450,10 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			planSpan: '',
 		};
 
-		// find selected plan
-		const SELECTED_PLAN = Array.from(plans).find(plan =>
-			plan.classList.contains('selected')
-		);
+		const SELECTED_PLAN = selectedPlan;
 
 		// is there a record in local storage
 		let storedStepTwo = localStorage.getItem('stepTwo');
@@ -462,49 +469,66 @@ document.addEventListener('DOMContentLoaded', () => {
 			storedStepTwo = JSON.parse(storedStepTwo);
 
 			if (planSpan === 'monthly') {
-				storedStepTwo.planName = SELECTED_PLAN.dataset.plan;
-				storedStepTwo.planCost = Object.keys(monthlyPlanFee).find(
-					key => key === SELECTED_PLAN.dataset.plan
-				);
-				storedStepTwo.planSpan = planSpan;
+				const myPlanFee = monthlyPlanFee.find(planFee => {
+					for (const [key, value] of Object.entries(planFee)) {
+						if (SELECTED_PLAN.dataset.plan === key) {
+							return value;
+						}
+					}
+				});
 
-				console.log(
-					'selected plan cost |||',
-					Object.keys(monthlyPlanFee)
-				);
+				storedStepTwo.planName = SELECTED_PLAN.dataset.plan;
+				storedStepTwo.planCost = myPlanFee[SELECTED_PLAN.dataset.plan];
+				storedStepTwo.planSpan = planSpan;
 			}
 
 			if (planSpan === 'yearly') {
+				const myPlanFee = yearlyPlanFee.find(planFee => {
+					for (const [key, value] of Object.entries(planFee)) {
+						if (SELECTED_PLAN.dataset.plan === key) {
+							return value;
+						}
+					}
+				});
+
 				storedStepTwo.planName = SELECTED_PLAN.dataset.plan;
-				storedStepTwo.planCost = Object.keys(monthlyPlanFee).find(
-					key => key === SELECTED_PLAN.dataset.plan
-				);
+				storedStepTwo.planCost = myPlanFee[SELECTED_PLAN.dataset.plan];
 				storedStepTwo.planSpan = planSpan;
 			}
-
-			console.log('plan object |||', storedStepTwo);
 
 			localStorage.setItem('stepTwo', JSON.stringify(storedStepTwo));
 		} else {
 			if (planSpan === 'monthly') {
+				const myPlanFee = monthlyPlanFee.find(planFee => {
+					for (const [key, value] of Object.entries(planFee)) {
+						if (SELECTED_PLAN.dataset.plan === key) {
+							return value;
+						}
+					}
+				});
+
 				planObj.planName = SELECTED_PLAN.dataset.plan;
-				planObj.planCost = Object.keys(monthlyPlanFee).find(
-					key => key === SELECTED_PLAN.dataset.plan
-				);
+				planObj.planCost = myPlanFee[SELECTED_PLAN.dataset.plan];
 				planObj.planSpan = planSpan;
 			}
 
 			if (planSpan === 'yearly') {
+				const myPlanFee = yearlyPlanFee.find(planFee => {
+					for (const [key, value] of Object.entries(planFee)) {
+						if (SELECTED_PLAN.dataset.plan === key) {
+							return value;
+						}
+					}
+				});
+
 				planObj.planName = SELECTED_PLAN.dataset.plan;
-				planObj.planCost = Object.keys(monthlyPlanFee).find(
-					key => key === SELECTED_PLAN.dataset.plan
-				);
+				planObj.planCost = myPlanFee[SELECTED_PLAN.dataset.plan];
 				planObj.planSpan = planSpan;
 			}
-
-			console.log('plan object |||', planObj);
 
 			localStorage.setItem('stepTwo', JSON.stringify(planObj));
 		}
 	}
+
+	// save step three
 });
